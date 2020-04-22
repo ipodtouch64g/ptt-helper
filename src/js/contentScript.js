@@ -1,8 +1,9 @@
 import URL2AID from './decode.js'
 import Main from './main.js'
+require('dotenv').config();
 
-let name = "YOUR_ACCOUNT";
-let pw = "YOUR_PASSWORD";
+let name = process.env.name;
+let pw = process.env.pw;
 
 let board_AID = URL2AID(window.location.toString());
 

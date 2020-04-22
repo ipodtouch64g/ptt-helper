@@ -2,7 +2,7 @@ import encode from "./encode.js";
 import "../css/contentScript.css";
 
 class Main {
-    constructor(board_AID,name,pw) {
+    constructor(board_AID, name, pw) {
         this.socket = new WebSocket("wss://ws.ptt.cc/bbs");
         this.board_AID = board_AID;
         this.name = name;
@@ -77,10 +77,10 @@ class Main {
 
     response() {
         function clear() {
-            ores.style.display = '';
-            tres.style.display = 'none';
-            document.getElementById("t").value = '';
-            res = '';
+            ores.style.display = "";
+            tres.style.display = "none";
+            document.getElementById("t").value = "";
+            res = "";
             state = 0;
         }
         var mc = document.getElementById("main-container");
@@ -92,26 +92,31 @@ class Main {
         // init
         let ores = this.originalResponse();
         let tres = this.typingResponse();
-        tres.style.display = 'none';
+        tres.style.display = "none";
 
         mc.appendChild(ores);
         mc.appendChild(tres);
 
-        body.addEventListener('keydown', (e) => {
+        body.addEventListener("keydown", e => {
             console.log(e.key);
             switch (state) {
                 case 0:
                     if (e.key == 1 || e.key == 2 || e.key == 3) {
                         e.preventDefault();
-                        let symbol = (e.key == 1) ? "推" : (e.key == 2) ? "噓" : "→";
+                        let symbol = e.key == 1 ? "推" : e.key == 2 ? "噓" : "→";
                         document.getElementById("sym").textContent = symbol;
-                        let attribute = (e.key == 1) ? "hl push-tag" : (e.key == 2) ? "f1 hl push-tag" : "f1 hl push-tag";
+                        let attribute =
+                            e.key == 1 ?
+                            "hl push-tag" :
+                            e.key == 2 ?
+                            "f1 hl push-tag" :
+                            "f1 hl push-tag";
                         sym.setAttribute("class", attribute);
-                        document.getElementById("name").textContent = this.name + ': ';
+                        document.getElementById("name").textContent = this.name + ": ";
                         state = Number(e.key);
-                        tres.style.display = '';
+                        tres.style.display = "";
                         document.getElementById("t").focus();
-                        ores.style.display = 'none';
+                        ores.style.display = "none";
                     }
                     break;
                 case 1:
@@ -123,20 +128,20 @@ class Main {
                         if (res.length > 0) {
                             // check if disconnected
                             while (this.socket.readyState != 1) {
-                                console.log('reopen socket...')
+                                console.log("reopen socket...");
                                 this.socketReopen();
                             }
-                            this.socket.send(encode('X', "big5"));
+                            this.socket.send(encode("X", "big5"));
                             this.socket.send(encode(res, "big5"));
-                            this.socket.send(encode('\r', "big5"));
-                            this.socket.send(encode('y\r', "big5"));
+                            this.socket.send(encode("\r", "big5"));
+                            this.socket.send(encode("y\r", "big5"));
                         }
                         clear();
                     } else if (e.keyCode == 27) {
                         clear();
-                        console.log('escape!')
+                        console.log("escape!");
                     } else {
-                        console.log('input morez')
+                        console.log("input morez");
                     }
                     break;
             }
@@ -154,9 +159,9 @@ class Main {
         name.setAttribute("id", "name");
         t.setAttribute("class", "res_content");
         t.setAttribute("id", "t");
-        d.appendChild(sym)
-        d.appendChild(name)
-        d.appendChild(t)
+        d.appendChild(sym);
+        d.appendChild(name);
+        d.appendChild(t);
         return d;
     }
 
