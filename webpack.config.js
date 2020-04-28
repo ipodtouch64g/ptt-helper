@@ -23,6 +23,7 @@ var options = {
   entry: {
     background: path.join(__dirname, "src", "js", "background.js"),
     contentScript: path.join(__dirname, "src", "js", "contentScript.js"),
+    login: path.join(__dirname, "src", "js", "login.js"),
   },
   chromeExtensionBoilerplate: {
     notHotReload: ["contentScript"]
@@ -65,6 +66,11 @@ var options = {
       template: path.join(__dirname, "src", "background.html"),
       filename: "background.html",
       chunks: ["background"]
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, "src", "login.html"),
+      filename: "login.html",
+      chunks: ["login"]
     })
   ]
 };

@@ -22,7 +22,11 @@
     "write-file-webpack-plugin": "^4.5.1"
   },
   "dependencies": {
+    "await-to-js": "^2.1.1",
     "dotenv": "^8.2.0",
-    "uao-js": "^1.0.1"
+    "sleep-promise": "^8.0.1",
+    "terminal.js": "github:kevinptt0323/terminal.js",
+    "uao-js": "^1.0.1",
+    "wcwidth": "^1.0.1"
   }
 }

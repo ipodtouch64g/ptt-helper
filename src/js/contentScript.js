@@ -1,17 +1,53 @@
-import URL2AID from './decode.js'
-import Main from './main.js'
-require('dotenv').config();
+import {
+    URL2AID
+} from './utils/decode'
+import Comment from './comment.js'
+import Bot from './bot.js';
+import {
+    getAccountInfo
+} from './utils/localStorage';
+import displayError from './utils/displayError';
 
-let name = process.env.name;
-let pw = process.env.pw;
+// Todo : Put globalState in a seperate js file.
+let states = {
+    "login": false,
+    "currentPage": null,
+    "board_AID": null,
+    "username": "",
+    "password": ""
+};
 
-let board_AID = URL2AID(window.location.toString());
+states.board_AID = URL2AID(window.location.toString());
 
-if (board_AID.length == 2) {
-    let main = new Main(board_AID,name,pw);
-    main.go();
-    main.response();
-} else {
-    console.log("now !at ptt!!!");
+Main(states);
+
+async function Main(states) {
+    if (states.board_AID.length == 2) {
+        try {
+            let res = await getAccountInfo();
+            states.username = res.acc.name;
+            states.password = res.acc.pw;
+
+            let comment = new Comment(states);
+            let ptt = new Bot(states, comment);
+
+            ptt.once('connect', async () => {
+                // How do I do error handling correctly???
+                try {
+                    await ptt.login();
+                    await ptt.displayArticleByAID(...states.board_AID);
+                    ptt.comment.setupResponse();
+                } catch (err) {
+                    console.log(err)
+                    displayError(err);
+                }
+            });
+        } catch (err) {
+            console.log(err)
+            displayError(err);
+        }
+    } else {
+        console.log("now !at ptt!!!");
+        return;
+    }
 }
-

@@ -17,3 +17,10 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
     },
     ["requestHeaders", "blocking", "extraHeaders"]
 );
+
+// set account on first install
+chrome.runtime.onInstalled.addListener(function (object) {
+    if (chrome.runtime.OnInstalledReason.INSTALL === object.reason) {
+        chrome.tabs.create({url:chrome.extension.getURL("login.html")});
+    }
+});
